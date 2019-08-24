@@ -2,9 +2,9 @@ import React from 'react';
 
 const Canvas = () => {
     return (
-        <div className="canvas">
+        <canvas className="canvas" id="canvas">
             Main
-        </div>
+        </canvas>
     );
 }
 

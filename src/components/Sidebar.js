@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-const LinkItem = ({})
 class Sidebar extends Component {
     constructor(props) {
         super(props);

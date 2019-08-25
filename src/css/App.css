@@ -23,7 +23,7 @@
   box-shadow: 0.2rem 0 0.4rem #9da5ab;
 }
 
-.canvas {
+.canvas-container {
   flex: 1 1 auto;
   min-height: 500px;
   min-width: 500px;

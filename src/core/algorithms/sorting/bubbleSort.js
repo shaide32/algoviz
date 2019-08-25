@@ -2,6 +2,11 @@ import AnimatedArray from '../../animatedObjects/animatedArray';
 const arr = new AnimatedArray(200, 200, 'cornflowerblue', 'tomato');
 arr.init([120, 50, 30, 60, 140, 90]);
 const args = [arr];
+const meta = {
+    name: 'BubbleSort',
+    url: '/bubblesort'
+}
+
 function* bubbleSort(arr) {
     let temp;
     for (let i = 0; i < arr.length; i++) {
@@ -33,5 +38,6 @@ function* bubbleSort(arr) {
 export {
     bubbleSort as fn,
     args,
-    arr as animationWrapper
+    arr as animationWrapper,
+    meta as metaData
 };

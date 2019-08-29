@@ -7,60 +7,62 @@
     }
 */
 
+
 class AnimateObjectWrapper {
 
     constructor(){
         this.animationHistory = [];
-        this.animationIndex = -1;
+        this.animationIndex = 0;
     }
     
-    animate(ctx) {
+    animate(ctx, forward=true) {
+        if(forward)
+            this.animationIndex++;
+        else
+            this.animationIndex--;
         return new Promise(resolve => {
             
-            let diffs = this.animatedObjects.map(ele => {
-                return Math.floor((ele.currentX - ele.lastX) / 10);
-            });
+            let diffs = this.animationHistory[this.animationIndex];
             console.log(diffs);
+            if(!diffs || diffs.length === 0){
+                resolve();
+                return;
+            } 
             let ele, i = 1;
             let timer;
             const iterate = () => {
                 if (i === 11) {
-                    ctx.clearRect(0, 0, 500, 500);
-                    this.animatedObjects.forEach(ele => {
-                        ele.lastX = ele.currentX;
-                        ele.draw(ctx, ele.currentX, ele.lastY, ele.width, ele.height);
+                    diffs.forEach((diff) => {
+                        ele = this.animatedObjects.find(ao => {
+                            return ao.id === diff.objectId;
+                        });
+                        ele[diff['property']] = diff.nextValue;
                     });
                     clearInterval(timer);
                     resolve();
                     
                 }
                 else if(i<11){
-                    ctx.clearRect(0, 0, 500, 500);
-                    diffs.forEach((diff, idx) => {
-                        ele = this.animatedObjects[idx];
+                    diffs.forEach((diff) => {
+                        ele = this.animatedObjects.find(ao => {
+                            return ao.id === diff.objectId;
+                        });
                         ctx.clearRect(ele.lastX, ele.lastY, ele.width, ele.height);
-                        ele.lastX = ele.lastX + diff;
-                        ele.draw(ctx, ele.lastX, ele.lastY, ele.width, ele.height);
+                        ele[diff['property']] = ele[diff['property']] +
+                        Math.floor((diff.nextValue - diff.prevValue) / 10);
+                        ele.draw(ctx, ele[diff['property']], ele.lastY, ele.width, ele.height);
                     });
                 } 
                 i++;
             }
-            timer = setInterval(iterate, 50);
+            timer = setInterval(iterate, 100);
         })
 
     }
 
 
     isTimeTravelling() {
-        return this.currentAnimationIndex === this.animationHistory.length - 1;
-    }
-
-    next(ctx) {
-        //if( this.isTimeTravelling() ) // draw from animation history
-    }
-
-    prev() {
-        
+        return this.currentAnimationIndex < this.animationHistory.length - 1;
     }
 
 }

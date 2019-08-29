@@ -1,5 +1,8 @@
+import cuid from 'cuid';
+
 class animatedRect {
     constructor(x, y, height, width, color) {
+        this.id = cuid();
         this.currentX = x;
         this.lastX = x;
         this.currentY = y;

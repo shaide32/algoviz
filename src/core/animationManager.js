@@ -19,8 +19,8 @@ class AnimationManager {
 
     async draw() {
         this.isRunningAnimationStep = true;
-        this.animatedObjs.draw(this.context);
-        await this.animatedObjs.animate(this.context);
+        this.animatedObjs.rearrange();
+        await this.animatedObjs.animate(this.context, true);
         this.isRunningAnimationStep = false;
     }
 
@@ -28,6 +28,7 @@ class AnimationManager {
         this.generatorRef = this.generatorFn(...this.fnArgs);
         const canvas = document.getElementById('canvas');
         this.context = canvas.getContext('2d');
+        this.animatedObjs.draw(this.context);
     }
 
     next() {

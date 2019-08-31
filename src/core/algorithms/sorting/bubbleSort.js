@@ -29,7 +29,7 @@ function* bubbleSort(arr) {
             arr[j+1].color = AA.defaultColor;
             arr[j].color = AA.defaultColor;
             //drawAnimatedObjs(arr);
-            //yield;
+            yield;
 
         }
     }

@@ -22,14 +22,16 @@ class AnimationManager {
         this.isRunningAnimationStep = true;
         this.animationIndex++;
         const diffs = this.animationHistory[this.animationIndex];
-        await this.animate(this.context, diffs, 'property',  'prevValue', 'nextValue');
+        if(diffs)
+            await this.animate(this.context, diffs, 'property',  'prevValue', 'nextValue');
         this.isRunningAnimationStep = false;
     }
 
     async animatePrev(){
         this.isRunningAnimationStep = true; 
         const diffs = this.animationHistory[this.animationIndex];
-        await this.animate(this.context, diffs, 'property',  'nextValue', 'prevValue');
+        if(diffs)
+            await this.animate(this.context, diffs, 'property',  'nextValue', 'prevValue');
         this.animationIndex--;
         this.isRunningAnimationStep = false;
     }
@@ -44,7 +46,7 @@ class AnimationManager {
         this.generatorRef = this.generatorFn(...this.fnArgs);
         const canvas = document.getElementById('canvas');
         this.context = canvas.getContext('2d');
-        this.animatedObjsWrapper.draw(this.context);
+        this.animatedObjsWrapper.draw(this.context, this.animationHistory);
     }
 
     next() {
@@ -109,8 +111,13 @@ class AnimationManager {
                             return ao.id === diff.objectId;
                         });
                         ele.clear(ctx);
-                        ele[diff[property]] = diff[prevValue] +
+                        if( diff[property] === 'color') {
+                            ele[diff[property]] = diff[nextValue];
+                        }
+                        else {
+                            ele[diff[property]] = diff[prevValue] +
                         Math.floor( i * (diff[nextValue] - diff[prevValue]) / 10);
+                        }
                         ele.draw(ctx);
                     });
                 } 

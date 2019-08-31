@@ -55,7 +55,7 @@ class AnimateObjectWrapper {
 
 
     isTimeTravelling() {
-        return this.currentAnimationIndex < this.animationHistory.length - 1;
+        return this.animationIndex < this.animationHistory.length - 1;
     }
 
 }

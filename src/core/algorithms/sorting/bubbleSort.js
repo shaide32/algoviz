@@ -1,6 +1,6 @@
 import AnimatedArray from '../../animatedObjects/animatedArray';
 const AA = new AnimatedArray(200, 200, 'cornflowerblue', 'tomato');
-let arr = AA.init([120, 50, 90]);
+let arr = AA.init([120, 50, 90, 10, 70, 90, 200, 150]);
 const args = [arr];
 const meta = {
     name: 'BubbleSort',

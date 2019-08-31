@@ -48,7 +48,7 @@ class AnimationManager {
 
     next() {
         if(this.animatedObjs.isTimeTravelling()){
-            this.draw();
+            this.animateNext();
             return {
                 done: false
             }

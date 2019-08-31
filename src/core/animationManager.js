@@ -1,8 +1,8 @@
 
 
 class AnimationManager {
-    constructor(animatedObjs, generatorFn, fnArgs) {
-        this.animatedObjs = animatedObjs;
+    constructor(animatedObjsWrapper, generatorFn, fnArgs) {
+        this.animatedObjsWrapper = animatedObjsWrapper;
         this.generatorFn = generatorFn;
         this.fnArgs = fnArgs;
         this.isAnimationRunning = false;
@@ -13,28 +13,29 @@ class AnimationManager {
         this.start = this.start.bind(this);
         this.toggle = this.toggle.bind(this);
         this.next = this.next.bind(this);
-        
+        this.animationHistory = [];
+        this.animationIndex = -1;
         
     }
 
     async animateNext(){
         this.isRunningAnimationStep = true;
-        this.animatedObjs.animationIndex++;
-        const diffs = this.animatedObjs.animationHistory[this.animatedObjs.animationIndex];
-        await this.animatedObjs.animate(this.context, diffs, 'property',  'prevValue', 'nextValue');
+        this.animationIndex++;
+        const diffs = this.animationHistory[this.animationIndex];
+        await this.animate(this.context, diffs, 'property',  'prevValue', 'nextValue');
         this.isRunningAnimationStep = false;
     }
 
     async animatePrev(){
         this.isRunningAnimationStep = true; 
-        const diffs = this.animatedObjs.animationHistory[this.animatedObjs.animationIndex];
-        await this.animatedObjs.animate(this.context, diffs, 'property',  'nextValue', 'prevValue');
-        this.animatedObjs.animationIndex--;
+        const diffs = this.animationHistory[this.animationIndex];
+        await this.animate(this.context, diffs, 'property',  'nextValue', 'prevValue');
+        this.animationIndex--;
         this.isRunningAnimationStep = false;
     }
 
     draw() {
-        const positionsChanged = this.animatedObjs.rearrange();
+        const positionsChanged = this.animatedObjsWrapper.rearrange(this.animationHistory);
         if(positionsChanged)
             this.animateNext(); 
     }
@@ -43,12 +44,12 @@ class AnimationManager {
         this.generatorRef = this.generatorFn(...this.fnArgs);
         const canvas = document.getElementById('canvas');
         this.context = canvas.getContext('2d');
-        this.animatedObjs.draw(this.context);
+        this.animatedObjsWrapper.draw(this.context);
     }
 
     next() {
-        if(this.animatedObjs.isTimeTravelling()){
-            this.animateNext();
+        if(this.isTimeTravelling()){ //No need to call the alogrithm's next()
+            this.animateNext(); //Next step is already present animate that
             return {
                 done: false
             }
@@ -77,6 +78,52 @@ class AnimationManager {
             window.clearTimeout(this.timer);
         }
         this.isAnimationRunning = !this.isAnimationRunning;
+    }
+
+    animate(ctx, diffs, property, prevValue, nextValue) { //animation logic
+        const animatedObjects = this.animatedObjsWrapper.animatedObjects;
+        return new Promise(resolve => {
+            if(!diffs || diffs.length === 0){
+                resolve();
+                return;
+            } 
+            let ele, i = 1;
+            let timer;
+            const iterate = () => {
+                if (i === 11) {
+                    diffs.forEach((diff) => {
+                        ele = animatedObjects.find(ao => {
+                            return ao.id === diff.objectId;
+                        });
+                        ele.clear(ctx);
+                        ele[diff[property]] = diff[nextValue];
+                        ele.draw(ctx);
+                    });
+                    clearInterval(timer);
+                    resolve();
+                    
+                }
+                else if(i<11){
+                    diffs.forEach((diff) => {
+                        ele = animatedObjects.find(ao => {
+                            return ao.id === diff.objectId;
+                        });
+                        ele.clear(ctx);
+                        ele[diff[property]] = diff[prevValue] +
+                        Math.floor( i * (diff[nextValue] - diff[prevValue]) / 10);
+                        ele.draw(ctx);
+                    });
+                } 
+                i++;
+            }
+            timer = setInterval(iterate, 100);
+        })
+
+    }
+
+
+    isTimeTravelling() {
+        return this.animationIndex < this.animationHistory.length - 1;
     }
 }
 

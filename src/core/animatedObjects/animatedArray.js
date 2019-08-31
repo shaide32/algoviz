@@ -1,10 +1,8 @@
 import animatedRect from './animatedRectangle';
-import AnimateObjectWrapper from './animatedObjectWrapper';
 import { generateDiff } from '../../utils';
 
-class AnimatedArray extends AnimateObjectWrapper {
+class AnimatedArray {
     constructor(x, y, defaultColor, activeColor) {
-        super();
         this.x = x;
         this.y = y;
         this.activeColor = activeColor;
@@ -29,7 +27,7 @@ class AnimatedArray extends AnimateObjectWrapper {
         this.rearrange();
     }
 
-    rearrange() {
+    rearrange(animationHistory) {
         const diffArr = [];
         this.animatedObjects.forEach((ele, index) => {
             const diff = this._checkDiff(ele.id, 'x', ele.x, this.x + index * 30);
@@ -37,7 +35,7 @@ class AnimatedArray extends AnimateObjectWrapper {
                 diffArr.push(diff);
         });
         if(diffArr.length > 0){
-            this.animationHistory.push(diffArr);
+            animationHistory.push(diffArr);
             return true;
         }
         return false;

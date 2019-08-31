@@ -29,7 +29,9 @@ class AnimateObjectWrapper {
                         ele = this.animatedObjects.find(ao => {
                             return ao.id === diff.objectId;
                         });
+                        ele.clear(ctx);
                         ele[diff[property]] = diff[nextValue];
+                        ele.draw(ctx);
                     });
                     clearInterval(timer);
                     resolve();
@@ -40,10 +42,10 @@ class AnimateObjectWrapper {
                         ele = this.animatedObjects.find(ao => {
                             return ao.id === diff.objectId;
                         });
-                        ctx.clearRect(ele.lastX, ele.lastY, ele.width, ele.height);
-                        ele[diff[property]] = ele[diff[property]] +
-                        Math.floor((diff[nextValue] - diff[prevValue]) / 10);
-                        ele.draw(ctx, ele[diff[property]], ele.lastY, ele.width, ele.height);
+                        ele.clear(ctx);
+                        ele[diff[property]] = diff[prevValue] +
+                        Math.floor( i * (diff[nextValue] - diff[prevValue]) / 10);
+                        ele.draw(ctx);
                     });
                 } 
                 i++;

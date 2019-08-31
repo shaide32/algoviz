@@ -59,11 +59,13 @@ class animatedRect {
         return this.currentColor;
     }
 
-    draw(ctx, x, y, w, h) {
+    draw(ctx) {
         ctx.fillStyle = this.color;
-        ctx.fillRect(x, y, w, h);
-        //setTimeout(() => this.animate(ctx), 50);
-        //return new Promise(resolve => setTimeout(() => this.animate(ctx, resolve), 0));
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+
+    clear(ctx) {
+        ctx.clearRect(this.x, this.y, this.width, this.height);
     }
 }
 

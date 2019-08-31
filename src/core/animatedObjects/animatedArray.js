@@ -59,7 +59,7 @@ class AnimatedArray extends AnimateObjectWrapper {
         this.rearrange();
         ctx.clearRect(0, 0, 500, 500);
         this.animatedObjects.forEach(ele => {
-            ele.draw(ctx, ele.lastX, ele.lastY, ele.width, ele.height);
+            ele.draw(ctx);
         });
     }
 

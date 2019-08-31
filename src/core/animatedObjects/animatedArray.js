@@ -36,8 +36,11 @@ class AnimatedArray extends AnimateObjectWrapper {
             if(diff)
                 diffArr.push(diff);
         });
-        if(diffArr)
+        if(diffArr.length > 0){
             this.animationHistory.push(diffArr);
+            return true;
+        }
+        return false;
     }
 
     _checkDiff(id, prop, nextValue, prevValue) {

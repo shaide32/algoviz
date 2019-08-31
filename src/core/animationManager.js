@@ -17,11 +17,23 @@ class AnimationManager {
         
     }
 
-    async draw() {
+    async animateNext(){
         this.isRunningAnimationStep = true;
-        this.animatedObjs.rearrange();
+        this.animatedObjs.animationIndex++;
         await this.animatedObjs.animate(this.context, true);
         this.isRunningAnimationStep = false;
+    }
+
+    async animatePrev(){
+        this.isRunningAnimationStep = true;
+        await this.animatedObjs.animate(this.context, false);
+        this.isRunningAnimationStep = false;
+    }
+
+    draw() {
+        const positionsChanged = this.animatedObjs.rearrange();
+        if(positionsChanged)
+            this.animateNext(); 
     }
 
     init() {
@@ -32,6 +44,12 @@ class AnimationManager {
     }
 
     next() {
+        if(this.animatedObjs.isTimeTravelling()){
+            this.draw();
+            return {
+                done: false
+            }
+        }
         const gen = this.generatorRef.next();
         this.draw();
         return gen;

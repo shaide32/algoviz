@@ -12,16 +12,11 @@ class AnimateObjectWrapper {
 
     constructor(){
         this.animationHistory = [];
-        this.animationIndex = 0;
+        this.animationIndex = -1;
     }
     
-    animate(ctx, forward=true) {
-        if(forward)
-            this.animationIndex++;
-        else
-            this.animationIndex--;
+    animate(ctx) {
         return new Promise(resolve => {
-            
             let diffs = this.animationHistory[this.animationIndex];
             console.log(diffs);
             if(!diffs || diffs.length === 0){

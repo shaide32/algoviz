@@ -28,7 +28,7 @@ class Footer extends Component {
     componentDidMount() {
         this.am = new AnimationManager(animationWrapper, fn, args);
         this.am.init();
-        this.am.draw();
+        //this.am.draw();
     }
     render() {
         return (

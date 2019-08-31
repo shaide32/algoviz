@@ -15,10 +15,8 @@ class AnimateObjectWrapper {
         this.animationIndex = -1;
     }
     
-    animate(ctx) {
+    animate(ctx, diffs, property, prevValue, nextValue) {
         return new Promise(resolve => {
-            let diffs = this.animationHistory[this.animationIndex];
-            console.log(diffs);
             if(!diffs || diffs.length === 0){
                 resolve();
                 return;
@@ -31,7 +29,7 @@ class AnimateObjectWrapper {
                         ele = this.animatedObjects.find(ao => {
                             return ao.id === diff.objectId;
                         });
-                        ele[diff['property']] = diff.nextValue;
+                        ele[diff[property]] = diff[nextValue];
                     });
                     clearInterval(timer);
                     resolve();
@@ -43,9 +41,9 @@ class AnimateObjectWrapper {
                             return ao.id === diff.objectId;
                         });
                         ctx.clearRect(ele.lastX, ele.lastY, ele.width, ele.height);
-                        ele[diff['property']] = ele[diff['property']] +
-                        Math.floor((diff.nextValue - diff.prevValue) / 10);
-                        ele.draw(ctx, ele[diff['property']], ele.lastY, ele.width, ele.height);
+                        ele[diff[property]] = ele[diff[property]] +
+                        Math.floor((diff[nextValue] - diff[prevValue]) / 10);
+                        ele.draw(ctx, ele[diff[property]], ele.lastY, ele.width, ele.height);
                     });
                 } 
                 i++;

@@ -3,6 +3,10 @@ import { fn, args, animationWrapper } from '../core/algorithms/sorting/bubbleSor
 import AnimationManager from '../core/animationManager';
 
 
+const prev = (am) => {
+    am.animatePrev();
+}
+
 const next = (am) => {
     am.next();
 }
@@ -33,6 +37,7 @@ class Footer extends Component {
     render() {
         return (
             <div className="footer">
+                <button onClick={ () => prev(this.am)} id="next">Prev</button>
                 <button onClick={ () => next(this.am)} id="next">Next</button>
                 <button onClick={ () => trigger(this.am)} id="trigger">Trigger</button>
             </div>

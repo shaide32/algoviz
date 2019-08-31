@@ -20,13 +20,16 @@ class AnimationManager {
     async animateNext(){
         this.isRunningAnimationStep = true;
         this.animatedObjs.animationIndex++;
-        await this.animatedObjs.animate(this.context, true);
+        const diffs = this.animatedObjs.animationHistory[this.animatedObjs.animationIndex];
+        await this.animatedObjs.animate(this.context, diffs, 'property',  'prevValue', 'nextValue');
         this.isRunningAnimationStep = false;
     }
 
     async animatePrev(){
-        this.isRunningAnimationStep = true;
-        await this.animatedObjs.animate(this.context, false);
+        this.isRunningAnimationStep = true; 
+        const diffs = this.animatedObjs.animationHistory[this.animatedObjs.animationIndex];
+        await this.animatedObjs.animate(this.context, diffs, 'property',  'nextValue', 'prevValue');
+        this.animatedObjs.animationIndex--;
         this.isRunningAnimationStep = false;
     }
 

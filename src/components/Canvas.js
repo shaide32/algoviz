@@ -4,7 +4,6 @@ const Canvas = () => {
     return (
         <div className="canvas-container">
             <canvas id="canvas" width="1200px" height="500px">
-                Main
             </canvas>
         </div>
         

@@ -30,15 +30,16 @@ class Footer extends Component {
     }
 
     componentDidMount() {
+        this.am = new AnimationManager(this.props.animationWrapper, this.props.fn, this.props.args, animationSpeed);
         this.am.init();
     }
 
     componentDidUpdate() {
+        this.am = new AnimationManager(this.props.animationWrapper, this.props.fn, this.props.args, animationSpeed);
         this.am.init();
     }
 
     render() {
-        this.am = new AnimationManager(this.props.animationWrapper, this.props.fn, this.props.args, animationSpeed);
         return (
             <div className="footer">
                 <button onClick={ () => prev(this.am)} id="next">Previous Step</button>
@@ -47,8 +48,9 @@ class Footer extends Component {
                 <div>
                     <input type="range" name="speed" defaultValue={animationSpeed} max="2000" min="0" onChange={
                         (e) => {
-                            this.am.setAnimationSpeed(e.target.value);
-                            animationSpeed = e.target.value;
+                            animationSpeed = 2000 - e.target.value;
+                            this.am.setAnimationSpeed(animationSpeed);
+                            
                         }
                     } />
                     <label htmlFor="speed">Animation Speed</label>

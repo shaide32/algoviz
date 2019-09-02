@@ -46,6 +46,7 @@ class AnimationManager {
         this.generatorRef = this.generatorFn(...this.fnArgs);
         const canvas = document.getElementById('canvas');
         this.context = canvas.getContext('2d');
+        this.context.clearRect(0, 0, 500, 500);
         this.animatedObjsWrapper.draw(this.context, this.animationHistory);
     }
 

@@ -1,7 +1,7 @@
 
 
 class AnimationManager {
-    constructor(animatedObjsWrapper, generatorFn, fnArgs) {
+    constructor(animatedObjsWrapper, generatorFn, fnArgs, animationSpeed) {
         this.animatedObjsWrapper = animatedObjsWrapper;
         this.generatorFn = generatorFn;
         this.fnArgs = fnArgs;
@@ -15,7 +15,7 @@ class AnimationManager {
         this.next = this.next.bind(this);
         this.animationHistory = [];
         this.animationIndex = -1;
-        
+        this.animationSpeed = animationSpeed;
     }
 
     async animateNext(){
@@ -123,7 +123,7 @@ class AnimationManager {
                 } 
                 i++;
             }
-            timer = setInterval(iterate, 100);
+            timer = setInterval(iterate, this.animationSpeed/10 );
         })
 
     }
@@ -131,6 +131,11 @@ class AnimationManager {
 
     isTimeTravelling() {
         return this.animationIndex < this.animationHistory.length - 1;
+    }
+
+    setAnimationSpeed(val) {
+        console.log("setting speed", val);
+        this.animationSpeed = Math.floor(val);
     }
 }
 

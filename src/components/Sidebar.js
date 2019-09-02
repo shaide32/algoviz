@@ -6,8 +6,10 @@ const getChildren = (children, parentUrl) => {
     if(children){
         return children.map((child) => {
             return (
-                <Link to={parentUrl + child.url} key={child.name}>{child.name}</Link>
-            )
+                <div key={child.name}>
+                    <Link to={parentUrl + child.url} >{child.name}</Link>
+                </div>
+            );
         });
     }
     return null;

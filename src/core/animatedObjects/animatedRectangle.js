@@ -62,10 +62,12 @@ class animatedRect {
     draw(ctx) {
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.font = '900 16px serif';
+        ctx.fillText(String(this.height), this.x, this.y + this.height + 15, this.width);
     }
 
     clear(ctx) {
-        ctx.clearRect(this.x, this.y, this.width, this.height);
+        ctx.clearRect(this.x, this.y, this.width, this.height + 30);
     }
 }
 

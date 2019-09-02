@@ -1,6 +1,7 @@
 import React, {Fragment, Component} from 'react';
 import { Route } from 'react-router-dom';
 import BubbleSort from './BubbleSort';
+import InsertionSort from './InsertionSort';
 import AnimatedArray from '../../core/animatedObjects/animatedArray';
 import { generateRandomizedArray } from '../../utils';
 
@@ -23,6 +24,10 @@ class Sorting extends Component {
                 <Route 
                     path={`${this.props.match.path}/bubbleSort`} 
                     render = {() => <BubbleSort args={args} animationWrapper={AA} />}
+                />
+                <Route 
+                    path={`${this.props.match.path}/insertionSort`} 
+                    render = {() => <InsertionSort args={args} animationWrapper={AA} />}
                 />
             </Fragment>
             

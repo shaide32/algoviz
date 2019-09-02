@@ -1,13 +1,10 @@
-import AnimatedArray from '../../animatedObjects/animatedArray';
-const AA = new AnimatedArray(200, 200, 'cornflowerblue', 'tomato');
-let arr = AA.init([120, 50, 90, 10, 70, 90, 200, 150]);
-const args = [arr];
+
 const meta = {
     name: 'BubbleSort',
     url: '/bubblesort'
 }
 
-function* bubbleSort(arr) {
+function* bubbleSort(arr, AA) {
     let temp;
     for (let i = 0; i < arr.length-1; i++) {
         for (let j = 0; j < arr.length-i-1; j++) {
@@ -37,7 +34,5 @@ function* bubbleSort(arr) {
 
 export {
     bubbleSort as fn,
-    args,
-    AA as animationWrapper,
     meta as metaData
 };

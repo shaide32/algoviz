@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from "react";
+import { Link } from 'react-router-dom';
 import {metaData} from '../core/algorithms';
 
 const getChildren = (children, parentUrl) => {
     if(children){
         return children.map((child) => {
             return (
-                <a href={parentUrl+child.url} key={child.name}><h3 >{child.name}</h3></a>
+                <Link to={parentUrl + child.url} key={child.name}>{child.name}</Link>
             )
         });
     }

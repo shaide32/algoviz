@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { fn, args, animationWrapper } from '../core/algorithms/sorting/bubbleSort';
 import AnimationManager from '../core/animationManager';
 
 
@@ -30,11 +29,15 @@ class Footer extends Component {
     }
 
     componentDidMount() {
-        this.am = new AnimationManager(animationWrapper, fn, args);
         this.am.init();
-        //this.am.draw();
     }
+
+    componentDidUpdate() {
+        this.am.init();
+    }
+
     render() {
+        this.am = new AnimationManager(this.props.animationWrapper, this.props.fn, this.props.args);
         return (
             <div className="footer">
                 <button onClick={ () => prev(this.am)} id="next">Prev</button>

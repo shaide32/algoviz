@@ -9,7 +9,7 @@ class Sorting extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            arr: generateRandomizedArray(5)
+            arr: generateRandomizedArray(10)
         }
     }
     render() {
@@ -18,7 +18,7 @@ class Sorting extends Component {
         const args = [arr, AA];
         return (
             <Fragment>
-                <button onClick={() => this.setState({arr: generateRandomizedArray(5)})}>
+                <button onClick={() => this.setState({arr: generateRandomizedArray(10)})}>
                     Randomize
                 </button>
                 <Route 

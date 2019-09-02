@@ -10,25 +10,29 @@ function* insertionSort(arr, AA) {
     {  
         j = i - 1;
         arr[i].color = AA.activeColor;
+        temp = arr[i];
         yield;
         /* Move elements of arr[0..i-1], that are  
         greater than key, to one position ahead  
         of their current position */
-        while (j >= 0 && arr[j].height > arr[j+1].height) 
+        while (j >= 0 && arr[j].height > arr[i].height) 
         {  
             arr[j].color = AA.activeColor;
-            arr[j + 1].color = AA.activeColor;
-            temp = arr[j + 1];
-            arr[j + 1] = arr[j];
-            arr[j] = temp;
             yield;
-            arr[j].color = AA.defaultColor;
-            arr[j + 1].color = AA.defaultColor;
             j = j - 1;
             
         }
-        arr[i].color = AA.defaultColor;
+        let k = i;
+        while( k>0 && k > j+1) {
+            arr[k] = arr[k-1];
+            arr[k].color = AA.defaultColor;
+            k--;
+        }
+        arr[k] = temp;
+        temp.color = AA.defaultColor;
         yield;
+        
+        
     }
 }
 

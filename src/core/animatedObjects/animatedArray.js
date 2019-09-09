@@ -1,15 +1,17 @@
 import animatedRect from './animatedRectangle';
 import { generateDiff } from '../../utils';
-
+import cuid from 'cuid';
 import * as d3 from 'd3';
 
 class AnimatedArray {
-    constructor(x, y, defaultColor, activeColor) {
+    constructor(x, y, defaultColor, activeColor, generatorFn, fnArgs) {
         this.x = x;
         this.y = y;
         this.activeColor = activeColor;
         this.defaultColor = defaultColor;
         this.animatedObjects = [];
+        this.fnArgs = fnArgs;
+        this.generatorFn = generatorFn;
     }
 
     init(arr) {
@@ -18,20 +20,16 @@ class AnimatedArray {
             .attr("width", 600)
             .attr("height", 600);
         const bar = graph.selectAll('g')
-        .data(arr)
-        .enter()
-        .append("g")
-        .attr("transform", function(d, i) {
-            return "translate(0," + i * 100 + ")";
-        })
-        .attr("id", function(d, i) {
-            return i;
-        })
-
-        arr.forEach((ele, index) => {
-            this.animatedObjects.push(new animatedRect(this.x + index * 30, this.y, ele, 20, this.defaultColor));
-        })
-        return this.animatedObjects;
+            .data(arr)
+            .enter()
+            .append("g")
+            .attr("transform", function(d, i) {
+                return "translate(0," + i * 100 + ")";
+            })
+            .attr("id", function(d, i) {
+                return cuid();
+            });
+        this.generatorRef = this.generatorFn(...this.fnArgs);
     }
 
     insert(index, item) {

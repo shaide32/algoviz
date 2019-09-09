@@ -5,13 +5,15 @@
   "dependencies": {
     "@babel/runtime": "^7.5.5",
     "cuid": "^2.1.6",
+    "d3": "^5.12.0",
+    "lint-staged": "^9.2.5",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1"
   },
   "scripts": {
-    "start": "react-scripts start --port=3001",
+    "start": "PORT=3006 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -30,5 +32,18 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "lint-staged": {
+    "linters": {
+      "*.js": [
+        "eslint --fix",
+        "prettier --write",
+        "git add"
+      ],
+      "*.{json,scss,md}": [
+        "prettier --write",
+        "git add"
+      ]
+    }
   }
 }

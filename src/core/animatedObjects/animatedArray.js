@@ -1,6 +1,8 @@
 import animatedRect from './animatedRectangle';
 import { generateDiff } from '../../utils';
 
+import * as d3 from 'd3';
+
 class AnimatedArray {
     constructor(x, y, defaultColor, activeColor) {
         this.x = x;
@@ -11,6 +13,21 @@ class AnimatedArray {
     }
 
     init(arr) {
+        const graph = d3.select("animation-container")
+            .append("svg")
+            .attr("width", 600)
+            .attr("height", 600);
+        const bar = graph.selectAll('g')
+        .data(arr)
+        .enter()
+        .append("g")
+        .attr("transform", function(d, i) {
+            return "translate(0," + i * 100 + ")";
+        })
+        .attr("id", function(d, i) {
+            return i;
+        })
+
         arr.forEach((ele, index) => {
             this.animatedObjects.push(new animatedRect(this.x + index * 30, this.y, ele, 20, this.defaultColor));
         })

@@ -2,7 +2,6 @@ import React, {Fragment, Component} from 'react';
 import { Route } from 'react-router-dom';
 import BubbleSort from './BubbleSort';
 import InsertionSort from './InsertionSort';
-import AnimatedArray from '../../core/animatedObjects/animatedArray';
 import { generateRandomizedArray } from '../../utils';
 
 class Sorting extends Component {
@@ -13,9 +12,7 @@ class Sorting extends Component {
         }
     }
     render() {
-        const AA = new AnimatedArray(50, 50, 'cornflowerblue', 'tomato');
-        let arr = AA.init(this.state.arr);
-        const args = [arr, AA];
+
         return (
             <Fragment>
                 <button onClick={() => this.setState({arr: generateRandomizedArray(10)})}>
@@ -23,11 +20,11 @@ class Sorting extends Component {
                 </button>
                 <Route 
                     path={`${this.props.match.path}/bubbleSort`} 
-                    render = {() => <BubbleSort args={args} animationWrapper={AA} />}
+                    render = {() => <BubbleSort arr={this.state.arr}/>}
                 />
                 <Route 
                     path={`${this.props.match.path}/insertionSort`} 
-                    render = {() => <InsertionSort args={args} animationWrapper={AA} />}
+                    render = {() => <InsertionSort arr={this.state.arr} />}
                 />
             </Fragment>
             

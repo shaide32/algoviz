@@ -1,86 +1,75 @@
-import animatedRect from './animatedRectangle';
-import { generateDiff } from '../../utils';
-import cuid from 'cuid';
-import * as d3 from 'd3';
-
+import animatedRect from "./animatedRectangle";
+import { generateDiff } from "../../utils";
+import cuid from "cuid";
+import * as d3 from "d3";
+window.d3 = d3;
 class AnimatedArray {
-    constructor(x, y, defaultColor, activeColor, generatorFn, fnArgs) {
+    constructor(x, y, defaultColor, activeColor, generatorFn, arr) {
         this.x = x;
         this.y = y;
         this.activeColor = activeColor;
         this.defaultColor = defaultColor;
         this.animatedObjects = [];
-        this.fnArgs = fnArgs;
+        this.arr = arr;
         this.generatorFn = generatorFn;
     }
 
     init(arr) {
-        const graph = d3.select("animation-container")
+        const graph = d3
+            .select(".animation-container")
             .append("svg")
             .attr("width", 600)
             .attr("height", 600);
-        const bar = graph.selectAll('g')
+        this.bar = graph
+            .selectAll("g")
             .data(arr)
             .enter()
             .append("g")
             .attr("transform", function(d, i) {
-                return "translate(0," + i * 100 + ")";
+                return "translate(" + i * 35 + ", 50)";
             })
             .attr("id", function(d, i) {
                 return cuid();
             });
-        this.generatorRef = this.generatorFn(...this.fnArgs);
-    }
 
-    insert(index, item) {
-        this.animatedObjects.splice(index, 0, new animatedRect(this.x + index * 30, this.y, item, 20, this.defaultColor));
-        this.rearrange();
-    }
+        this.bar.append("rect")
+            .attr("height", function(d) {
+                return d * 2;
+            })
+            .attr("width", 30);
 
-    remove(index) {
-        this.animatedObjects.splice(index, 1);
-        this.rearrange();
-    }
-
-    rearrange(animationHistory) {
-        const diffArr = [];
-        this.animatedObjects.forEach((ele, index) => {
-            //checking position
-            let diff = this._checkDiff(ele.id, 'x', this.x + index * 30, ele.x);
-            if(diff)
-                diffArr.push(diff);
-            //checking color
-            diff = this._checkDiff(ele.id, 'color', ele.color, ele.lastColor);
-            if(diff)
-                diffArr.push(diff);
+        let animationHistory = [];
+        this.generatorRef = this.generatorFn(this.bar._groups[0], {
+            activeColor: "red",
+            defaultColor: "blue"
         });
-        if(diffArr.length > 0){
-            animationHistory.push(diffArr);
-            return true;
+        let gen = this.generatorRef.next();
+        while (!gen.done) {
+            if (gen.value) {
+                animationHistory.push(gen.value);
+            }
+
+            gen = this.generatorRef.next();
         }
-        return false;
+        return animationHistory;
     }
 
-    _checkDiff(id, prop, nextValue, prevValue) {
-        if(nextValue !== prevValue) {
-            return new generateDiff(
-                id,
-                prop,
-                nextValue,
-                prevValue  
-            );
-        }
-        return null;
-    }
+	findAnimatedBars(id) {
+		return this.bar._groups[0].find(bar => bar.id === id);
 
-    draw(ctx, animationHistory) {
-        this.rearrange(animationHistory);
-        ctx.clearRect(0, 0, 500, 500);
-        this.animatedObjects.forEach(ele => {
-            ele.draw(ctx);
-        });
-    }
-
+	}
+	animate(diffs) {
+		return new Promise((resolve) => {
+			if(!diffs || diffs.length === 0)
+				resolve();
+			diffs.forEach(diff => {
+				var obj = this.findAnimatedBars(diff.id);
+				obj.setAttribute(diff.attr, diff.value);
+			});
+			resolve();
+		});
+		
+	}
 }
 
 export default AnimatedArray;

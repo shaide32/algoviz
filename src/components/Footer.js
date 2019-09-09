@@ -30,12 +30,12 @@ class Footer extends Component {
     }
 
     componentDidMount() {
-        this.am = new AnimationManager(this.props.animationWrapper, this.props.fn, this.props.args, animationSpeed);
+        this.am = new AnimationManager(this.props.animationWrapper, animationSpeed);
         this.am.init();
     }
 
     componentDidUpdate() {
-        this.am = new AnimationManager(this.props.animationWrapper, this.props.fn, this.props.args, animationSpeed);
+        this.am = new AnimationManager(this.props.animationWrapper, animationSpeed);
         this.am.init();
     }
 

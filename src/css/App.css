@@ -33,3 +33,7 @@
   flex: 0 0 10%;
   box-shadow: 0.2rem 0 0.4rem #9da5ab;
 }
+
+svg g {
+  fill: blue;
+}

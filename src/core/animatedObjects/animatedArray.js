@@ -58,15 +58,28 @@ class AnimatedArray {
 		return this.bar._groups[0].find(bar => bar.id === id);
 
 	}
+
+	changeAttributes(obj, diff, key) {
+		switch(diff.type) {
+			case 'position': 
+				return obj.transition()
+					.duration(1000)
+					.attr(diff.attr, diff[key]);
+			case 'styles': 
+				return obj.transition()
+					.duration(1000)
+					.style(diff.attr, diff[key]);
+			default: return obj;
+		}
+	}
+
 	animate(diffs, key) {
 		return new Promise((resolve) => {
 			if(!diffs || diffs.length === 0)
 				resolve();
 			diffs.forEach(diff => {
 				var obj = d3.select('#'+ diff.id);
-				obj.transition()
-				.duration(1000)
-				.attr(diff.attr, diff[key])
+				this.changeAttributes(obj, diff, key)	
 				.on("end", resolve);
 			});
 		});

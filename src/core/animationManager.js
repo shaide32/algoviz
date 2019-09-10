@@ -57,7 +57,6 @@ class AnimationManager {
         }
     }
     start() {
-        this.isAnimationRunning = true;
         this.timer = setInterval(() => this.next(), 200);
     }
 

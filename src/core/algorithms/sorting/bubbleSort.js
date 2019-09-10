@@ -19,7 +19,23 @@ function* bubbleSort(barObjects, AA) {
             // arr[j+1].color = AA.activeColor;
             // arr[j].color = AA.activeColor;
             //drawAnimatedObjs(arr);
-            yield;
+            yield  [
+                {   
+                    type: 'styles',
+                    id: arr[j].id,
+                    attr: 'fill',
+                    nextValue: 'red',
+                    prevValue: 'blue'
+                },
+                {
+                    type: 'styles',
+                    id: arr[j+1].id,
+                    attr: 'fill',
+                    nextValue: 'red',
+                    prevValue: 'blue'
+                },
+
+            ];
             if (arr[j].data > arr[j+1].data) {
                 // temp = arr[i].height;
                 // arr[i].height = arr[j].height;
@@ -31,13 +47,15 @@ function* bubbleSort(barObjects, AA) {
                 arr[j].transform =  arr[j+1].transform;
                 arr[j+1].transform = temp;
                 yield [
-                    {
+                    {   
+                        type: 'position',
                         id: arr[j].id,
                         attr: 'transform',
                         nextValue: arr[j].transform,
                         prevValue: arr[j+1].transform
                     },
                     {
+                        type: 'position',
                         id: arr[j+1].id,
                         attr: 'transform',
                         nextValue: arr[j+1].transform,
@@ -51,7 +69,23 @@ function* bubbleSort(barObjects, AA) {
             // arr[j+1].color = AA.defaultColor;
             // arr[j].color = AA.defaultColor;
             //drawAnimatedObjs(arr);
-            yield;
+            yield [
+                {   
+                    type: 'styles',
+                    id: arr[j].id,
+                    attr: 'fill',
+                    nextValue: 'blue',
+                    prevValue: 'red'
+                },
+                {
+                    type: 'styles',
+                    id: arr[j+1].id,
+                    attr: 'fill',
+                    nextValue: 'blue',
+                    prevValue: 'red'
+                },
+
+            ];;
 
         }
     }

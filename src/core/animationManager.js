@@ -29,14 +29,14 @@ class AnimationManager {
         this.isRunningAnimationStep = true;
         this.animationIndex++;
         const diffs = this.animationHistory[this.animationIndex];
-        await this.animatedObjsWrapper.animate(diffs);
+        await this.animatedObjsWrapper.animate(diffs, 'nextValue');
         this.isRunningAnimationStep = false;
     }
 
     async animatePrev() {
         this.isRunningAnimationStep = true;
         const diffs = this.animationHistory[this.animationIndex];
-        await this.animatedObjsWrapper.animate(diffs);
+        await this.animatedObjsWrapper.animate(diffs, 'prevValue');
         this.animationIndex--;
         this.isRunningAnimationStep = false;
     }

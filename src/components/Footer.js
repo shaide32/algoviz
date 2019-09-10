@@ -4,7 +4,7 @@ import AnimationManager from '../core/animationManager';
 let animationSpeed = 1000;
 
 const prev = (am) => {
-    am.animatePrev();
+    am.prev();
 }
 
 const next = (am) => {

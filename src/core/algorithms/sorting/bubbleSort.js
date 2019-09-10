@@ -34,12 +34,14 @@ function* bubbleSort(barObjects, AA) {
                     {
                         id: arr[j].id,
                         attr: 'transform',
-                        value: arr[j].transform
+                        nextValue: arr[j].transform,
+                        prevValue: arr[j+1].transform
                     },
                     {
                         id: arr[j+1].id,
                         attr: 'transform',
-                        value: arr[j+1].transform
+                        nextValue: arr[j+1].transform,
+                        prevValue: arr[j].transform
                     },
 
                 ];

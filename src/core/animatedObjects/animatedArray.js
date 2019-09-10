@@ -58,15 +58,17 @@ class AnimatedArray {
 		return this.bar._groups[0].find(bar => bar.id === id);
 
 	}
-	animate(diffs) {
+	animate(diffs, key) {
 		return new Promise((resolve) => {
 			if(!diffs || diffs.length === 0)
 				resolve();
 			diffs.forEach(diff => {
-				var obj = this.findAnimatedBars(diff.id);
-				obj.setAttribute(diff.attr, diff.value);
+				var obj = d3.select('#'+ diff.id);
+				obj.transition()
+				.duration(1000)
+				.attr(diff.attr, diff[key])
+				.on("end", resolve);
 			});
-			resolve();
 		});
 		
 	}

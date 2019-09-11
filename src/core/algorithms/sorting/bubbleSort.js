@@ -13,7 +13,7 @@ function* bubbleSort(barObjects, AA) {
             transform: bar.getAttribute('transform')
         });
     });
-    let temp, attr1, attr2;
+    let temp;
     for (let i = 0; i < arr.length-1; i++) {
         for (let j = 0; j < arr.length-i-1; j++) {
             // arr[j+1].color = AA.activeColor;

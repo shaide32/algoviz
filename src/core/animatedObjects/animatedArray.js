@@ -19,8 +19,8 @@ class AnimatedArray {
         const graph = d3
 			.select(".animation-container")
             .append("svg")
-            .attr("width", 600)
-            .attr("height", 600);
+            .attr("width", 500)
+            .attr("height", 500);
         this.bar = graph
             .selectAll("g")
             .data(arr)

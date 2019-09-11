@@ -1,6 +1,6 @@
 import {generateRandomizedArray} from '../utils';
 class AnimationManager {
-    constructor(animatedObjsWrapper, animationSpeed) {
+    constructor(animatedObjsWrapper, animationSpeed, progressUpdateFn) {
         this.animatedObjsWrapper = animatedObjsWrapper;
         this.isAnimationRunning = false;
         this.generatorRef = null;
@@ -13,6 +13,7 @@ class AnimationManager {
         this.animationHistory = [];
         this.animationIndex = -1;
         this.animationSpeed = animationSpeed;
+        this.progressUpdateFn = progressUpdateFn;
     }
 
     init() {
@@ -25,6 +26,7 @@ class AnimationManager {
         const diffs = this.animationHistory[this.animationIndex];
         await this.animatedObjsWrapper.animate(diffs, 'nextValue', this.animationSpeed);
         this.isRunningAnimationStep = false;
+        this.progressUpdateFn(this.animationIndex);
     }
 
     async animatePrev() {
@@ -33,6 +35,7 @@ class AnimationManager {
         await this.animatedObjsWrapper.animate(diffs, 'prevValue', this.animationSpeed);
         this.animationIndex--;
         this.isRunningAnimationStep = false;
+        this.progressUpdateFn(this.animationIndex);
     }
 
     next() {

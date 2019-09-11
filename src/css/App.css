@@ -24,13 +24,13 @@
 }
 
 .canvas-container {
-  flex: 1 1 auto;
+  flex: 1 1 60%;
   min-height: 500px;
   min-width: 500px;
 }
 
 .footer {
-  flex: 0 0 10%;
+  flex: 0 0 30%;
   box-shadow: 0.2rem 0 0.4rem #9da5ab;
 }
 

@@ -15,6 +15,7 @@ class Sorting extends Component {
 
         return (
             <Fragment>
+                <div className="footer">
                 <button onClick={() => this.setState({arr: generateRandomizedArray(10)})}>
                     Randomize
                 </button>
@@ -26,6 +27,7 @@ class Sorting extends Component {
                     path={`${this.props.match.path}/insertionSort`} 
                     render = {() => <InsertionSort arr={this.state.arr} />}
                 />
+                </div>
             </Fragment>
             
         ); 

@@ -48,6 +48,7 @@ class Footer extends Component {
                 animationLength: this.am.animationHistory.length
             };
         });
+        window.am = this.am;
     }
 
     componentDidUpdate() {}
@@ -56,8 +57,7 @@ class Footer extends Component {
         this.setState({animationIndex: value})
     }
 
-    render() { 
-        console.log(this.state.animationIndex);
+    render() {
         return (
             <div>
                 <button onClick={() => prev(this.am)} id="next">
@@ -98,7 +98,9 @@ class Footer extends Component {
                         max={this.state.animationLength}
                         step="1"
                         callback={values => {
-                            this.setState({animationIndex: values[0]})
+                            window.clearTimeout(this.am.timer);
+                            this.am.next(values[0]);
+                            //this.setState({animationIndex: values[0]});
                         }}
                     ></AnimationIndexBar>
 

@@ -5,11 +5,11 @@ import { AnimationSpeedBar, AnimationIndexBar } from "./ProgressBar";
 window.animationIndex = 0;
 
 const prev = am => {
-    am.prev();
+    am.animatePrev();
 };
 
 const next = am => {
-    am.next();
+    am.animateNext();
 };
 
 const trigger = am => {
@@ -49,9 +49,12 @@ class Footer extends Component {
             };
         });
         window.am = this.am;
+        console.log('Footer mounted');
     }
 
-    componentDidUpdate() {}
+    componentDidUpdate() {
+        console.log('Footer updated');
+    }
 
     updateAnimationIndex(value) {
         this.setState({animationIndex: value})
@@ -99,7 +102,11 @@ class Footer extends Component {
                         step="1"
                         callback={values => {
                             window.clearTimeout(this.am.timer);
-                            this.am.next(values[0]);
+                            const newAnimationIndex = values[0];
+                            if(newAnimationIndex > this.am.animationIndex)
+                                this.am.animateNext(newAnimationIndex);
+                            else
+                                this.am.animatePrev(newAnimationIndex);
                             //this.setState({animationIndex: values[0]});
                         }}
                     ></AnimationIndexBar>

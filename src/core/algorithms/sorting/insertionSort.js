@@ -4,33 +4,67 @@ const meta = {
     url: '/insertionSort'
 }
 
-function* insertionSort(arr, AA) {
-    let i, j, temp;  
+function* insertionSort(barObjects) {
+    let i, j, temp;
+    const arr = [];
+    barObjects.forEach(bar => {
+        arr.push({
+            data: bar.__data__,
+            id: bar.id,
+            transform: bar.getAttribute('transform')
+        });
+    });
+ 
     for (i = 1; i < arr.length; i++) 
     {  
         j = i - 1;
-        arr[i].color = AA.activeColor;
-        temp = arr[i];
-        yield;
+        // arr[i].color = AA.activeColor;
+        // temp = arr[i];
+        // yield;
+        yield  [
+            {   
+                type: 'styles',
+                id: arr[i].id,
+                attr: 'fill',
+                nextValue: 'red',
+                prevValue: 'blue'
+            }
+        ];
         /* Move elements of arr[0..i-1], that are  
         greater than key, to one position ahead  
         of their current position */
-        while (j >= 0 && arr[j].height > arr[i].height) 
+        const yieldVal = [];
+        while (j >= 0 && arr[j].data > arr[i].data) 
         {  
-            arr[j].color = AA.activeColor;
-            yield;
+            yieldVal.push({
+                type: 'position',
+                id: arr[j].id,
+                attr: 'transform',
+                nextValue: arr[j+1].transform,
+                prevValue: arr[j].transform
+            })
             j = j - 1;
             
         }
-        let k = i;
-        while( k>0 && k > j+1) {
-            arr[k] = arr[k-1];
-            arr[k].color = AA.defaultColor;
-            k--;
-        }
-        arr[k] = temp;
-        temp.color = AA.defaultColor;
-        yield;
+        yieldVal.push({
+            type: 'position',
+            id: arr[i].id,
+            attr: 'transform',
+            nextValue: arr[j+1].transform,
+            prevValue: arr[i].transform
+        });
+
+        yield yieldVal;
+    
+        yield  [
+            {   
+                type: 'styles',
+                id: arr[i].id,
+                attr: 'fill',
+                nextValue: 'blue',
+                prevValue: 'red'
+            }
+        ];
         
         
     }

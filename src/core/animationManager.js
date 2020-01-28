@@ -42,51 +42,51 @@ class AnimationManager {
         this.progressUpdateFn(newAnimationindex);
         this.isRunningAnimationStep = true;
         this.animationIndex++;
-        const diffs = this.calculateDiffs(this.animationIndex, newAnimationindex + 1)
+        const diffs = this.calculateDiffs(this.animationIndex, newAnimationindex + 1);
         await this.animatedObjsWrapper.animate(diffs, 'nextValue', this.animationSpeed);
         this.isRunningAnimationStep = false;
         this.animationIndex = newAnimationindex;
+        this.next(this.animationIndex+1);
     }
 
-    async animatePrev(steps) {
+    async animatePrev(newAnimationindex = this.animationIndex-1) {
         this.isRunningAnimationStep = true;
-        const diffs = this.animationHistory[this.animationIndex];
+        const diffs = this.calculateDiffs(newAnimationindex+1, this.animationIndex+1);
         await this.animatedObjsWrapper.animate(diffs, 'prevValue', this.animationSpeed);
-        this.animationIndex--;
+        this.animationIndex = newAnimationindex;
         this.isRunningAnimationStep = false;
         this.progressUpdateFn(this.animationIndex);
     }
 
     next(newAnimationindex) {
-        if (this.animationIndex >= this.animationHistory.length) {
-            window.clearTimeout(this.timer);
+        if (this.animationIndex >= this.animationHistory.length || !this.isAnimationRunning) {
+            this.isAnimationRunning = false;
         } else if (!this.isRunningAnimationStep){
             this.animateNext(newAnimationindex);
         }
     }
 
     prev(steps = 1) {
-        if (this.animationIndex < 0) {
-            window.clearTimeout(this.timer);
+        if (this.animationIndex < 0 || !this.isAnimationRunning) {
+            this.isAnimationRunning = false;
         } else if (!this.isRunningAnimationStep) {
             this.animatePrev(steps);
         }
     }
     start() {
-        this.timer = setInterval(() => this.next(), 200);
+        //this.timer = setInterval(() => this.next(), 200);
+        this.next(this.animationIndex+1);
     }
 
     toggle() {
         if (!this.isAnimationRunning) {
+            this.isAnimationRunning = true;
             this.start();
-        } else {
-            window.clearTimeout(this.timer);
         }
-        this.isAnimationRunning = !this.isAnimationRunning;
+        else this.isAnimationRunning  = false;
     }
 
     setAnimationSpeed(val) {
-        console.log("setting speed", val);
         this.animationSpeed = Math.floor(val);
     }
 }

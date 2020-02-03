@@ -1,4 +1,4 @@
-import { generateRandomizedArray } from '../utils';
+
 class AnimationManager {
 	constructor(animatedObjsWrapper, animationSpeed, progressUpdateFn) {
 		this.animatedObjsWrapper = animatedObjsWrapper;
@@ -17,7 +17,7 @@ class AnimationManager {
 	}
 
 	init() {
-		this.animationHistory = this.animatedObjsWrapper.init(generateRandomizedArray(10));
+		this.animationHistory = this.animatedObjsWrapper.init();
 	}
 
 	calculateDiffs(firstIndex, lastIndex) {
@@ -30,7 +30,7 @@ class AnimationManager {
 					return;
 				}
 				const key = diff.id + diff.type;
-				if (diffsMap.hasOwnProperty(key)) {
+				if (Object.prototype.hasOwnProperty.call(diffsMap, key)) {
 					diffsMap[key] = Object.assign({}, diffsMap[key], diff);
 				} else {
 					diffsMap[key] = diff;

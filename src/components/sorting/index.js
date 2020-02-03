@@ -12,6 +12,7 @@ class Sorting extends Component {
 		};
 	}
 
+
 	render() {
 		return (
 			<Fragment>

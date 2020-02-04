@@ -10,61 +10,44 @@ class AnimationManager {
 		this.start = this.start.bind(this);
 		this.toggle = this.toggle.bind(this);
 		this.next = this.next.bind(this);
-		this.animationHistory = [];
+		this.animationHistoryLength = 0;
 		this.animationIndex = -1;
 		this.animationSpeed = animationSpeed;
 		this.progressUpdateFn = progressUpdateFn;
 	}
 
 	init() {
-		this.animationHistory = this.animatedObjsWrapper.init();
+		this.animationHistoryLength = this.animatedObjsWrapper.init();
 	}
 
-	calculateDiffs(firstIndex, lastIndex) {
-		const diffsArr = this.animationHistory.slice(firstIndex, lastIndex);
-		const diffsMap = {};
-
-		diffsArr.forEach(diffs => {
-			diffs.forEach(diff => {
-				if (!diff.id) {
-					return;
-				}
-				const key = diff.id + diff.type;
-				if (Object.prototype.hasOwnProperty.call(diffsMap, key)) {
-					diffsMap[key] = Object.assign({}, diffsMap[key], diff);
-				} else {
-					diffsMap[key] = diff;
-				}
-			});
-		});
-
-		return Object.values(diffsMap);
-	}
 
 	async animateNext(newAnimationindex = this.animationIndex+1) {
-		this.progressUpdateFn(newAnimationindex);
 		this.isRunningAnimationStep = true;
-		this.animationIndex++;
-		const diffs = this.calculateDiffs(this.animationIndex, newAnimationindex + 1);
-
-		await this.animatedObjsWrapper.animate(diffs, 'nextValue', this.animationSpeed);
+		await this.animatedObjsWrapper.animateNext({
+			currentIndex: this.animationIndex + 1,
+			nextIndex: newAnimationindex + 1,
+			animationSpeed: this.animationSpeed
+		});
 		this.isRunningAnimationStep = false;
+		this.progressUpdateFn(newAnimationindex);
 		this.animationIndex = newAnimationindex;
 		this.next(this.animationIndex+1);
 	}
 
 	async animatePrev(newAnimationindex = this.animationIndex-1) {
 		this.isRunningAnimationStep = true;
-		const diffs = this.calculateDiffs(newAnimationindex+1, this.animationIndex+1);
-
-		await this.animatedObjsWrapper.animate(diffs, 'prevValue', this.animationSpeed);
+		await this.animatedObjsWrapper.animatePrev({
+			currentIndex: newAnimationindex + 1,
+			nextIndex: this.animationIndex + 1,
+			animationSpeed: this.animationSpeed
+		});
 		this.animationIndex = newAnimationindex;
 		this.isRunningAnimationStep = false;
 		this.progressUpdateFn(this.animationIndex);
 	}
 
 	next(newAnimationindex) {
-		if (this.animationIndex >= this.animationHistory.length || !this.isAnimationRunning) {
+		if (this.animationIndex >= this.animationHistoryLength || !this.isAnimationRunning) {
 			this.isAnimationRunning = false;
 		} else if (!this.isRunningAnimationStep) {
 			this.animateNext(newAnimationindex);

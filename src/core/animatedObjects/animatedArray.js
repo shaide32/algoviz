@@ -10,6 +10,7 @@ class AnimatedArray {
 		this.animatedObjects = [];
 		this.arr = arr;
 		this.generatorFn = generatorFn;
+		this.animationHistory = [];
 	}
 
 	init() {
@@ -41,7 +42,6 @@ class AnimatedArray {
 			})
 			.attr('width', 9 * spacing / 10);
 
-		const animationHistory = [];
 
 		this.generatorRef = this.generatorFn(this.bar._groups[0], {
 			activeColor: 'red',
@@ -50,13 +50,13 @@ class AnimatedArray {
 		let gen = this.generatorRef.next();
 		while (!gen.done) {
 			if (gen.value) {
-				animationHistory.push(gen.value);
+				this.animationHistory.push(gen.value);
 			}
 
 			gen = this.generatorRef.next();
 		}
 
-		return animationHistory;
+		return this.animationHistory.length;
 	}
 
 	changeAttributes(obj, diff, key, animationSpeed) {
@@ -73,6 +73,27 @@ class AnimatedArray {
 		}
 	}
 
+	calculateDiffs(firstIndex, lastIndex) {
+		const diffsArr = this.animationHistory.slice(firstIndex, lastIndex);
+		const diffsMap = {};
+
+		diffsArr.forEach(diffs => {
+			diffs.forEach(diff => {
+				if (!diff.id) {
+					return;
+				}
+				const key = diff.id + diff.type;
+				if (Object.prototype.hasOwnProperty.call(diffsMap, key)) {
+					diffsMap[key] = Object.assign({}, diffsMap[key], diff);
+				} else {
+					diffsMap[key] = diff;
+				}
+			});
+		});
+
+		return Object.values(diffsMap);
+	}
+
 	animate(diffs, key, animationSpeed) {
 		return new Promise((resolve) => {
 			if (!diffs || diffs.length === 0) {
@@ -85,6 +106,26 @@ class AnimatedArray {
 					.on('end', resolve);
 			});
 		});
+	}
+
+	animateNext({
+		currentIndex,
+		nextIndex,
+		animationSpeed
+	}) {
+		const diffs = this.calculateDiffs(currentIndex, nextIndex);
+
+		return this.animate(diffs, 'nextValue', animationSpeed);
+	}
+
+	animatePrev({
+		currentIndex,
+		nextIndex,
+		animationSpeed
+	}) {
+		const diffs = this.calculateDiffs(currentIndex, nextIndex);
+
+		return this.animate(diffs, 'prevValue', animationSpeed);
 	}
 }
 

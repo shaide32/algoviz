@@ -45,7 +45,7 @@ class Footer extends Component {
 		this.am.init();
 		this.setState(() => {
 			return {
-				animationLength: this.am.animationHistory.length
+				animationLength: this.am.animationHistoryLength
 			};
 		});
 		window.am = this.am;

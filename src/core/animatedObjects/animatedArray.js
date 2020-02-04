@@ -11,6 +11,8 @@ class AnimatedArray {
 		this.arr = arr;
 		this.generatorFn = generatorFn;
 		this.animationHistory = [];
+		this.animateNext = this.animateNext.bind(this);
+		this.animatePrev = this.animatePrev.bind(this);
 	}
 
 	init() {

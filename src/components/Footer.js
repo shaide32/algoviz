@@ -49,11 +49,9 @@ class Footer extends Component {
 			};
 		});
 		window.am = this.am;
-		console.log('Footer mounted');
 	}
 
 	componentDidUpdate() {
-		console.log('Footer updated');
 	}
 
 	updateAnimationIndex(value) {

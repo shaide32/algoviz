@@ -9,7 +9,6 @@ class AnimationManager {
 		this.init = this.init.bind(this);
 		this.start = this.start.bind(this);
 		this.toggle = this.toggle.bind(this);
-		this.next = this.next.bind(this);
 		this.animationHistoryLength = 0;
 		this.animationIndex = -1;
 		this.animationSpeed = animationSpeed;
@@ -20,51 +19,58 @@ class AnimationManager {
 		this.animationHistoryLength = this.animatedObjsWrapper.init();
 	}
 
-
-	async animateNext(newAnimationindex = this.animationIndex+1) {
+	async animate({
+		animateFn,
+		currentIndex,
+		nextIndex,
+		animationSpeed,
+		newAnimationindex
+	}) {
 		this.isRunningAnimationStep = true;
-		await this.animatedObjsWrapper.animateNext({
-			currentIndex: this.animationIndex + 1,
-			nextIndex: newAnimationindex + 1,
-			animationSpeed: this.animationSpeed
+		await animateFn({
+			currentIndex,
+			nextIndex,
+			animationSpeed
 		});
 		this.isRunningAnimationStep = false;
-		this.progressUpdateFn(newAnimationindex);
 		this.animationIndex = newAnimationindex;
-		this.next(this.animationIndex+1);
-	}
-
-	async animatePrev(newAnimationindex = this.animationIndex-1) {
-		this.isRunningAnimationStep = true;
-		await this.animatedObjsWrapper.animatePrev({
-			currentIndex: newAnimationindex + 1,
-			nextIndex: this.animationIndex + 1,
-			animationSpeed: this.animationSpeed
-		});
-		this.animationIndex = newAnimationindex;
-		this.isRunningAnimationStep = false;
 		this.progressUpdateFn(this.animationIndex);
 	}
 
-	next(newAnimationindex) {
-		if (this.animationIndex >= this.animationHistoryLength || !this.isAnimationRunning) {
-			this.isAnimationRunning = false;
-		} else if (!this.isRunningAnimationStep) {
-			this.animateNext(newAnimationindex);
-		}
+	animateNext(newAnimationindex = this.animationIndex+1) {
+		this.animate({
+			currentIndex: this.animationIndex + 1,
+			nextIndex: newAnimationindex + 1,
+			animationSpeed: this.animationSpeed,
+			animateFn: this.animatedObjsWrapper.animateNext,
+			newAnimationindex
+		});
 	}
 
-	prev(steps = 1) {
-		if (this.animationIndex < 0 || !this.isAnimationRunning) {
-			this.isAnimationRunning = false;
-		} else if (!this.isRunningAnimationStep) {
-			this.animatePrev(steps);
-		}
+	animatePrev(newAnimationindex = this.animationIndex-1) {
+		this.animate({
+			currentIndex: newAnimationindex + 1,
+			nextIndex: this.animationIndex + 1,
+			animationSpeed: this.animationSpeed,
+			animateFn: this.animatedObjsWrapper.animatePrev,
+			newAnimationindex
+		});
 	}
 
 	start() {
-		// this.timer = setInterval(() => this.next(), 200);
-		this.next(this.animationIndex+1);
+		const tick = () => {
+			while (
+				this.animationIndex < this.animationHistoryLength &&
+				this.isAnimationRunning &&
+				!this.isRunningAnimationStep
+			) {
+				console.log(this.animationIndex);
+				this.animateNext();
+			}
+			window.requestAnimationFrame(tick);
+		};
+
+		window.requestAnimationFrame(tick);
 	}
 
 	toggle() {

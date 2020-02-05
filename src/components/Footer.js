@@ -51,7 +51,28 @@ class Footer extends Component {
 		window.am = this.am;
 	}
 
-	componentDidUpdate() {
+	componentDidUpdate(prevProps, prevState, shouldResetAM) {
+		if (shouldResetAM) {
+			this.am = new AnimationManager(
+				this.props.animationWrapper,
+				this.state.animationSpeed,
+				this.updateAnimationIndex
+			);
+			this.am.init();
+			this.setState(() => {
+				return {
+					animationLength: this.am.animationHistoryLength
+				};
+			});
+		}
+	}
+
+	getSnapshotBeforeUpdate(prevProps) {
+		if (prevProps.animationWrapper !== this.props.animationWrapper) {
+			return true;
+		}
+
+		return null;
 	}
 
 	updateAnimationIndex(value) {
@@ -99,7 +120,6 @@ class Footer extends Component {
 						max={this.state.animationLength}
 						step="1"
 						callback={values => {
-							window.clearTimeout(this.am.timer);
 							const newAnimationIndex = values[0];
 							if (newAnimationIndex > this.am.animationIndex) {
 								this.am.animateNext(newAnimationIndex);

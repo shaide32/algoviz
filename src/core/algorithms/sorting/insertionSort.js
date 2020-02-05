@@ -1,3 +1,4 @@
+/* eslint-disable require-atomic-updates */
 
 const meta = {
 	name: 'InsertionSort',
@@ -6,7 +7,9 @@ const meta = {
 
 function* insertionSort(barObjects) {
 	let i,
-		j;
+		j,
+		k,
+		temp;
 	const arr = [];
 
 	barObjects.forEach(bar => {
@@ -18,52 +21,76 @@ function* insertionSort(barObjects) {
 	});
 
 	for (i = 1; i < arr.length; i++) {
-		j = i - 1;
-		// arr[i].color = AA.activeColor;
-		// temp = arr[i];
-		// yield;
-		yield [
-			{
-				type: 'styles',
-				id: arr[i].id,
-				attr: 'fill',
-				nextValue: 'red',
-				prevValue: 'blue'
+		j = i;
+		k = i-1;
+		let breakFlag = false;
+		while (j >= 1) {
+			yield [
+				{
+					type: 'styles',
+					id: arr[j].id,
+					attr: 'fill',
+					nextValue: 'red',
+					prevValue: 'blue'
+				},
+				{
+					type: 'styles',
+					id: arr[k].id,
+					attr: 'fill',
+					nextValue: 'red',
+					prevValue: 'blue'
+				}
+			];
+			if (arr[j].data < arr[k].data) {
+				temp = arr[j];
+				arr[j] = arr[k];
+				arr[k] = temp;
+				temp = arr[j].transform;
+				arr[j].transform = arr[k].transform;
+				arr[k].transform = temp;
+				yield [
+					{
+						type: 'position',
+						id: arr[j].id,
+						attr: 'transform',
+						nextValue: arr[j].transform,
+						prevValue: arr[k].transform
+					},
+					{
+						type: 'position',
+						id: arr[k].id,
+						attr: 'transform',
+						nextValue: arr[k].transform,
+						prevValue: arr[j].transform
+					}
+				];
+			} else {
+				breakFlag = true;
 			}
-		];
-		/* Move elements of arr[0..i-1], that are  
-        greater than key, to one position ahead  
-        of their current position */
-		const yieldVal = [];
-		while (j >= 0 && arr[j].data > arr[i].data) {
-			yieldVal.push({
-				type: 'position',
-				id: arr[j].id,
-				attr: 'transform',
-				nextValue: arr[j+1].transform,
-				prevValue: arr[j].transform
-			});
-			j = j - 1;
+
+			yield [
+				{
+					type: 'styles',
+					id: arr[j].id,
+					attr: 'fill',
+					nextValue: 'blue',
+					prevValue: 'red'
+				},
+				{
+					type: 'styles',
+					id: arr[k].id,
+					attr: 'fill',
+					nextValue: 'blue',
+					prevValue: 'red'
+				}
+			];
+
+			j--;
+			k--;
+			if (breakFlag) {
+				break;
+			}
 		}
-		yieldVal.push({
-			type: 'position',
-			id: arr[i].id,
-			attr: 'transform',
-			nextValue: arr[j+1].transform,
-			prevValue: arr[i].transform
-		});
-
-		yield yieldVal;
-
-		yield [
-			{
-				type: 'styles',
-				id: arr[i].id,
-				attr: 'fill',
-				nextValue: 'blue',
-				prevValue: 'red'
-			}
-		];
 	}
 }
 

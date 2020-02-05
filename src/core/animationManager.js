@@ -64,7 +64,6 @@ class AnimationManager {
 				this.isAnimationRunning &&
 				!this.isRunningAnimationStep
 			) {
-				console.log(this.animationIndex);
 				this.animateNext();
 			}
 			window.requestAnimationFrame(tick);

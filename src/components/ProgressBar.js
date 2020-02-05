@@ -16,7 +16,7 @@ export class AnimationSpeedBar extends Component {
 					display: 'flex',
 					justifyContent: 'center',
 					flexWrap: 'wrap',
-					margin: '2em'
+					margin: '0.5em'
 				}}
 			>
 				<Range
@@ -62,8 +62,8 @@ export class AnimationSpeedBar extends Component {
 							{...props}
 							style={{
 								...props.style,
-								height: '42px',
-								width: '42px',
+								height: '12px',
+								width: '8px',
 								borderRadius: '4px',
 								backgroundColor: '#FFF',
 								display: 'flex',
@@ -104,7 +104,7 @@ export class AnimationIndexBar extends Component {
 					display: 'flex',
 					justifyContent: 'center',
 					flexWrap: 'wrap',
-					margin: '2em'
+					margin: '0.5em'
 				}}
 			>
 				<Range
@@ -150,8 +150,8 @@ export class AnimationIndexBar extends Component {
 							{...props}
 							style={{
 								...props.style,
-								height: '42px',
-								width: '42px',
+								height: '12px',
+								width: '8px',
 								borderRadius: '4px',
 								backgroundColor: '#FFF',
 								display: 'flex',

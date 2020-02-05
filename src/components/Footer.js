@@ -81,24 +81,12 @@ class Footer extends Component {
 
 	render() {
 		return (
-			<div>
-				<button onClick={() => prev(this.am)} id="next">
-                    Previous Step
-				</button>
-				<button onClick={() => trigger(this.am)} id="trigger">
-                    Play/ Pause
-				</button>
-				<button onClick={() => next(this.am)} id="next">
-                    Next Step
-				</button>
-				<div>
-					{/* <input type="range" name="speed" defaultValue={animationSpeed} max="2000" min="0" onChange={
-                        (e) => {
-                            animationSpeed = 2000 - e.target.value;
-                            this.am.setAnimationSpeed(animationSpeed);
-                            
-                        }
-                    } /> */}
+			<div style={{
+				display: 'flex'
+			}}>
+				<div style={{
+					flex: '1 1 auto'
+				}}>
 					<label htmlFor="speed">Animation Speed</label>
 					<AnimationSpeedBar
 						name="speed"
@@ -111,8 +99,35 @@ class Footer extends Component {
 							this.setState({ animationSpeed: values[0] });
 						}}
 					></AnimationSpeedBar>
+				</div>
 
-					<label htmlFor="speed">Animation Speed</label>
+				<div
+					style={{
+						flex: '1 1 auto'
+					}}>
+					<button
+						onClick={() => prev(this.am)}
+						id="next"
+						disabled={this.am.isAnimationRunning}
+					>
+						Previous Step
+					</button>
+					<button onClick={() => trigger(this.am)} id="trigger">
+						Play/ Pause
+					</button>
+					<button
+						onClick={() => next(this.am)}
+						id="next"
+						disabled={this.am.isAnimationRunning}
+					>
+						Next Step
+					</button>
+				</div>
+
+				<div style={{
+					flex: '1 1 auto'
+				}}>
+					<label htmlFor="speed">Animation Progress</label>
 					<AnimationIndexBar
 						name="speed"
 						value={this.state.animationIndex}

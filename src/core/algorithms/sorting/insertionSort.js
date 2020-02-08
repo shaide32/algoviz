@@ -2,7 +2,7 @@
 
 const meta = {
 	name: 'InsertionSort',
-	url: '/insertionSort'
+	url: '/insertionsort'
 };
 
 function* insertionSort(barObjects) {

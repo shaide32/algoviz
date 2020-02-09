@@ -59,8 +59,12 @@ class AnimationManager {
 
 	start() {
 		const tick = () => {
+			if (this.animationIndex >= this.animationHistoryLength) {
+				this.isAnimationRunning = false;
+
+				return;
+			}
 			while (
-				this.animationIndex < this.animationHistoryLength &&
 				this.isAnimationRunning &&
 				!this.isRunningAnimationStep
 			) {

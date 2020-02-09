@@ -44,7 +44,6 @@ class AnimatedArray {
 			})
 			.attr('width', 9 * spacing / 10);
 
-
 		this.generatorRef = this.generatorFn(this.bar._groups[0], {
 			activeColor: 'red',
 			defaultColor: 'blue'
@@ -57,6 +56,7 @@ class AnimatedArray {
 
 			gen = this.generatorRef.next();
 		}
+		console.log(this.animationHistory);
 
 		return this.animationHistory.length;
 	}

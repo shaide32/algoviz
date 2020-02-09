@@ -19,7 +19,7 @@ function* insertionSort(barObjects) {
 			transform: bar.getAttribute('transform')
 		});
 	});
-
+	console.log(arr);
 	for (i = 1; i < arr.length; i++) {
 		j = i;
 		k = i-1;
@@ -92,6 +92,7 @@ function* insertionSort(barObjects) {
 			}
 		}
 	}
+	console.log(arr);
 }
 
 export {

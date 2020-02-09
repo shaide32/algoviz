@@ -25,7 +25,6 @@ class Sidebar extends Component {
 	}
 
 	render() {
-		console.log(metaData.children);
 		const links = metaData.children;
 
 		return (

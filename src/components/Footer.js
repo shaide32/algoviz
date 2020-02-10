@@ -68,11 +68,7 @@ class Footer extends Component {
 	}
 
 	getSnapshotBeforeUpdate(prevProps) {
-		if (prevProps.animationWrapper !== this.props.animationWrapper) {
-			return true;
-		}
-
-		return null;
+		return prevProps.animationWrapper !== this.props.animationWrapper;
 	}
 
 	updateAnimationIndex(value) {
@@ -80,6 +76,8 @@ class Footer extends Component {
 	}
 
 	render() {
+		const disabledButton = this.am.isAnimationRunning && this.state.animationIndex < this.am.animationHistoryLength;
+
 		return (
 			<div style={{
 				display: 'flex'
@@ -108,7 +106,7 @@ class Footer extends Component {
 					<button
 						onClick={() => prev(this.am)}
 						id="next"
-						disabled={this.am.isAnimationRunning}
+						disabled={disabledButton}
 					>
 						Previous Step
 					</button>
@@ -118,7 +116,7 @@ class Footer extends Component {
 					<button
 						onClick={() => next(this.am)}
 						id="next"
-						disabled={this.am.isAnimationRunning}
+						disabled={disabledButton}
 					>
 						Next Step
 					</button>

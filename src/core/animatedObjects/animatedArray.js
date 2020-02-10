@@ -56,7 +56,6 @@ class AnimatedArray {
 
 			gen = this.generatorRef.next();
 		}
-		console.log(this.animationHistory);
 
 		return this.animationHistory.length;
 	}

@@ -5,85 +5,23 @@ const meta = {
 	url: '/insertionsort'
 };
 
-function* insertionSort(barObjects) {
+function* insertionSort(arr = []) {
 	let i,
 		j,
-		k,
-		temp;
-	const arr = [];
+		k;
 
-	barObjects.forEach(bar => {
-		arr.push({
-			data: bar.__data__,
-			id: bar.id,
-			transform: bar.getAttribute('transform')
-		});
-	});
-	console.log(arr);
 	for (i = 1; i < arr.length; i++) {
 		j = i;
 		k = i-1;
 		let breakFlag = false;
 		while (j >= 1) {
-			yield [
-				{
-					type: 'styles',
-					id: arr[j].id,
-					attr: 'fill',
-					nextValue: 'red',
-					prevValue: 'blue'
-				},
-				{
-					type: 'styles',
-					id: arr[k].id,
-					attr: 'fill',
-					nextValue: 'red',
-					prevValue: 'blue'
-				}
-			];
-			if (arr[j].data < arr[k].data) {
-				temp = arr[j];
-				arr[j] = arr[k];
-				arr[k] = temp;
-				temp = arr[j].transform;
-				arr[j].transform = arr[k].transform;
-				arr[k].transform = temp;
-				yield [
-					{
-						type: 'position',
-						id: arr[j].id,
-						attr: 'transform',
-						nextValue: arr[j].transform,
-						prevValue: arr[k].transform
-					},
-					{
-						type: 'position',
-						id: arr[k].id,
-						attr: 'transform',
-						nextValue: arr[k].transform,
-						prevValue: arr[j].transform
-					}
-				];
+			yield arr.highlight([j, k]);
+			if (arr[j].__data__ < arr[k].__data__) {
+				yield arr.swap(j, k);
 			} else {
 				breakFlag = true;
 			}
-
-			yield [
-				{
-					type: 'styles',
-					id: arr[j].id,
-					attr: 'fill',
-					nextValue: 'blue',
-					prevValue: 'red'
-				},
-				{
-					type: 'styles',
-					id: arr[k].id,
-					attr: 'fill',
-					nextValue: 'blue',
-					prevValue: 'red'
-				}
-			];
+			yield arr.unhighlight([j, k]);
 
 			j--;
 			k--;
@@ -92,7 +30,6 @@ function* insertionSort(barObjects) {
 			}
 		}
 	}
-	console.log(arr);
 }
 
 export {

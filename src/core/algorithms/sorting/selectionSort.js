@@ -5,86 +5,29 @@ const meta = {
 	url: '/selectionsort'
 };
 
-function* selectionSort(barObjects) {
+function* selectionSort(arr = []) {
 	let i,
-		j,
-		temp;
-	const arr = [];
-
-	barObjects.forEach(bar => {
-		arr.push({
-			data: bar.__data__,
-			id: bar.id,
-			transform: bar.getAttribute('transform')
-		});
-	});
+		j;
 
 	for (i = 0; i < arr.length; i++) {
 		let minIndex = i;
+
+		yield arr.highlight([i]);
 		for (j = i+1; j < arr.length; j++) {
-			minIndex = arr[minIndex].data > arr[j].data ? j : minIndex;
+			yield arr.highlight([j]);
+			minIndex = arr[minIndex].__data__ > arr[j].__data__ ? j : minIndex;
+			yield arr.unhighlight([j]);
 		}
 		if (minIndex === i) {
+			yield arr.unhighlight([i]);
 			continue;
 		}
 
-		yield [
-			{
-				type: 'styles',
-				id: arr[i].id,
-				attr: 'fill',
-				nextValue: 'red',
-				prevValue: 'blue'
-			},
-			{
-				type: 'styles',
-				id: arr[minIndex].id,
-				attr: 'fill',
-				nextValue: 'red',
-				prevValue: 'blue'
-			}
-		];
+		yield arr.highlight([i, minIndex]);
 
-		temp = arr[i];
-		arr[i] = arr[minIndex];
-		arr[minIndex] = temp;
-		temp = arr[i].transform;
-		arr[i].transform = arr[minIndex].transform;
-		arr[minIndex].transform = temp;
-		yield [
-			{
-				type: 'position',
-				id: arr[minIndex].id,
-				attr: 'transform',
-				nextValue: arr[minIndex].transform,
-				prevValue: arr[i].transform
-			},
-			{
-				type: 'position',
-				id: arr[i].id,
-				attr: 'transform',
-				nextValue: arr[i].transform,
-				prevValue: arr[minIndex].transform
-			}
-		];
+		yield arr.swap(i, minIndex);
 
-
-		yield [
-			{
-				type: 'styles',
-				id: arr[i].id,
-				attr: 'fill',
-				nextValue: 'blue',
-				prevValue: 'red'
-			},
-			{
-				type: 'styles',
-				id: arr[minIndex].id,
-				attr: 'fill',
-				nextValue: 'blue',
-				prevValue: 'red'
-			}
-		];
+		yield arr.unhighlight([i, minIndex]);
 	}
 }
 

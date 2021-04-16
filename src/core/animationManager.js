@@ -86,7 +86,7 @@ class AnimationManager {
 	}
 
 	setAnimationSpeed(val) {
-		this.animationSpeed = Math.floor(val);
+		this.animationSpeed = Math.floor(val) / 100;
 	}
 }
 

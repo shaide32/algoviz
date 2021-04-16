@@ -17,8 +17,8 @@ class proxyArray extends Array {
 				type: 'styles',
 				id: this[index].id,
 				attr: 'fill',
-				nextValue: 'red',
-				prevValue: 'blue'
+				nextValue: 'tomato',
+				prevValue: 'cornflowerblue'
 			};
 		});
 
@@ -31,8 +31,8 @@ class proxyArray extends Array {
 				type: 'styles',
 				id: this[index].id,
 				attr: 'fill',
-				nextValue: 'blue',
-				prevValue: 'red'
+				nextValue: 'cornflowerblue',
+				prevValue: 'tomato'
 			};
 		});
 
@@ -126,8 +126,8 @@ class AnimatedArray {
 		const AnimatedArrayProxy = new proxyArray(this.bar._groups[0], this.animationHistory);
 
 		this.generatorRef = this.generatorFn(AnimatedArrayProxy, {
-			activeColor: 'red',
-			defaultColor: 'blue'
+			activeColor: 'tomato',
+			defaultColor: 'cornflowerblue'
 		});
 		let gen = this.generatorRef.next();
 		while (!gen.done) {

@@ -29,7 +29,7 @@ class Sidebar extends Component {
 
 		return (
 			<div className="sidebar">
-				<span>Company Logo</span>
+				{/* <span>Company Logo</span> */}
 				{
 					links.map((link) => {
 						const childElements = getChildren(link.children, link.url);

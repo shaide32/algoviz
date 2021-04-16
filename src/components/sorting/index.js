@@ -5,12 +5,13 @@ import InsertionSort from './InsertionSort';
 import SelectionSort from './SelectionSort';
 import MergeSort from './MergeSort';
 import { generateRandomizedArray } from '../../utils';
+import { Button } from 'reactstrap';
 
 class Sorting extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			arr: generateRandomizedArray(10)
+			arr: generateRandomizedArray(50)
 		};
 	}
 
@@ -19,9 +20,13 @@ class Sorting extends Component {
 		return (
 			<Fragment>
 				<div className="footer">
-					<button onClick={() => this.setState({ arr: generateRandomizedArray(10) })}>
-                    Randomize
-					</button>
+					<Button
+						onClick={() => this.setState({ arr: generateRandomizedArray(50) })}
+					>
+						Randomize
+					</Button>
+					<br/>
+					<br/>
 					<Route
 						path={`${this.props.match.path}/bubblesort`}
 						render = {() => <BubbleSort arr={this.state.arr}/>}

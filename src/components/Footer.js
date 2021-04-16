@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AnimationManager from '../core/animationManager';
 import { AnimationSpeedBar, AnimationIndexBar } from './ProgressBar';
+import { Button } from 'reactstrap';
 
 window.animationIndex = 0;
 
@@ -43,6 +44,7 @@ class Footer extends Component {
 			this.updateAnimationIndex
 		);
 		this.am.init();
+		// this.am.setAnimationSpeed(1000 - this.state.animationSpeed);
 		this.setState(() => {
 			return {
 				animationLength: this.am.animationHistoryLength
@@ -90,10 +92,10 @@ class Footer extends Component {
 						name="speed"
 						value={this.state.animationSpeed}
 						min="0"
-						max="2000"
+						max="1000"
 						step="10"
 						callback={values => {
-							this.am.setAnimationSpeed(2000 - values[0]);
+							this.am.setAnimationSpeed(1000 - values[0]);
 							this.setState({ animationSpeed: values[0] });
 						}}
 					></AnimationSpeedBar>
@@ -103,23 +105,30 @@ class Footer extends Component {
 					style={{
 						flex: '1 1 auto'
 					}}>
-					<button
+
+					<Button
 						onClick={() => prev(this.am)}
 						id="next"
 						disabled={disabledButton}
+						color="secondary"
 					>
 						Previous Step
-					</button>
-					<button onClick={() => trigger(this.am)} id="trigger">
+					</Button>{' '}
+					<Button
+						onClick={() => trigger(this.am)}
+						id="trigger"
+						color="primary"
+					>
 						Play/ Pause
-					</button>
-					<button
+					</Button>{' '}
+					<Button
 						onClick={() => next(this.am)}
 						id="next"
 						disabled={disabledButton}
+						color="secondary"
 					>
 						Next Step
-					</button>
+					</Button>
 				</div>
 
 				<div style={{
